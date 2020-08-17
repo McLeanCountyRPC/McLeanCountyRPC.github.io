@@ -58,28 +58,30 @@
       "opacity": 0.65
     };
 
-    function buildHistoricDistrictPopup(feature, layer) {
-      let prop = feature.properties
-      layer.bindPopup(`<h2>${prop.name}</h2>
-        <p>${prop.city}</p>
-        <p><a href=${prop.website}>${prop.website}</a></p>`)
-    }
 
     const historicDistrictLayer = new L.GeoJSON.AJAX(historicDistrictGeoJSON, {
       style: historicDistrictStyle,
-      onEachFeature: buildHistoricDistrictPopup
+      onEachFeature: displayHistoricDistrictLayer
     });
 
-    historicDistrictLayer.addTo(map);
 
-    historicDistrictLayer.on("mouseover", function() {
-      this.openPopup();
-    });
+    function displayHistoricDistrictLayer(feature, layer) {
+      let prop = feature.properties
+      let popup = `<h2>${prop.name}</h2>
+        <p>${prop.city}</p>
+        <p><a href=${prop.website}>Website</a></p>`
 
-    historicDistrictLayer.on("mouseout", function() {
-      this.closePopup();
-    });
+      layer.addTo(map)
+      .bindPopup(popup);
 
+      layer.on("mouseover", function() {
+        this.openPopup();
+      });
+
+      layer.on("mouseout", function() {
+        this.closePopup();
+      });
+    }
   </script>
 </body>
 </html>
